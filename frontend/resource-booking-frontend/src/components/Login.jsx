@@ -42,6 +42,7 @@ const Login = ({ onLogin }) => {
 
           if (profileRes.code === 200 && profileRes.data) {
             const userRole = profileRes.data.role
+            localStorage.setItem('userId', String(profileRes.data.id || profileRes.data.userId || profileRes.data.user_id || ''))
             localStorage.setItem('userRole', String(userRole || 1))
             localStorage.setItem('userName', profileRes.data.fullname || formData.username.trim())
             localStorage.setItem('userEmail', profileRes.data.email || '')

@@ -6,6 +6,7 @@ import Register from './components/Register'
 import Dashboard from './components/Dashboard'
 import Resources from './components/Resources'
 import MyBookings from './components/MyBookings'
+import MyTasks from './components/MyTasks'
 import AdminPanel from './components/AdminPanel'
 import Navbar from './components/Navbar'
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/dashboard" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" replace />} />
         <Route path="/resources" element={isLoggedIn ? <Resources /> : <Navigate to="/login" replace />} />
         <Route path="/my-bookings" element={isLoggedIn ? <MyBookings /> : <Navigate to="/login" replace />} />
+        <Route path="/my-tasks" element={isLoggedIn ? <MyTasks /> : <Navigate to="/login" replace />} />
         <Route path="/admin" element={isLoggedIn ? <AdminPanel /> : <Navigate to="/login" replace />} />
         <Route path="/" element={<Navigate to={isLoggedIn ? "/dashboard" : "/login"} replace />} />
       </Routes>

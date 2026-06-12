@@ -3,11 +3,11 @@ import * as taskService from '../service/taskService.js'
 
 const router = express.Router()
 
-router.post("/", async (req, res)=>{
+router.post("/", async(req, res) => {
     res.json(await taskService.createTask(req.body, req.headers["token"]))
 });
 
-router.post("/createtask", async (req, res)=>{
+router.post("/createtask", async(req, res) => {
     //console.log(req.body)
     res.json(await taskService.createTask(req.body, req.headers["token"]))
 });
@@ -30,4 +30,9 @@ router.put("/updatetask/:ID", async(req, res) => {
     res.json(response);
 });
 
-export default router
+router.get("vectorsearch/:QUERY", async(req, res) => {
+    const { QUERY } = req.params;
+    const response = await taskService.vectorSearch(Query, req.headers.token);
+    res.json(response);
+})
+export default router;

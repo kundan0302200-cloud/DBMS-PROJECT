@@ -36,8 +36,28 @@ const tabs = [
   { id: 'bookings', label: 'Bookings' }
 ]
 
-const getUserId = (user) => user?.id ?? user?.userId ?? user?.user_id
+const getUserId = (user) => user?.id ?? user?.userId ?? user?.user_id ?? user?._id
 const getUserLabel = (user) => `${user.fullname || user.email || 'User'} (${user.email || `ID ${getUserId(user)}`})`
+
+const normalizeDeadlineValue = (value) => {
+  const raw = String(value || '').trim()
+  if (!raw) return ''
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw
+
+  const match = raw.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/)
+  if (!match) return raw
+
+  return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`
+}
+
+const formatDeadlineLabel = (value) => {
+  const normalized = normalizeDeadlineValue(value)
+  if (!normalized) return '-'
+
+  const [year, month, day] = normalized.split('-')
+  return year && month && day ? `${day}/${month}/${year}` : String(value || '-')
+}
 
 const AdminPanel = () => {
   const navigate = useNavigate()
@@ -106,7 +126,7 @@ const AdminPanel = () => {
   const handleAssigneeSearch = async (value) => {
     setAssigneeSearch(value)
     setSelectedAssignee(null)
-    setTaskForm({ ...taskForm, assignedto: '' })
+    setTaskForm((prev) => ({ ...prev, assignedto: '' }))
 
     try {
       const response = await userService.searchUsersByEmail(value)
@@ -122,7 +142,7 @@ const AdminPanel = () => {
     const id = getUserId(user)
     setSelectedAssignee(user)
     setAssigneeSearch(user.email || '')
-    setTaskForm({ ...taskForm, assignedto: id })
+    setTaskForm((prev) => ({ ...prev, assignedto: id ? String(id) : '' }))
   }
 
   const handleTaskSubmit = async (event) => {
@@ -133,10 +153,12 @@ const AdminPanel = () => {
       assignedto: Number(taskForm.assignedto),
       priority: Number(taskForm.priority),
       status: Number(taskForm.status),
-      createdby: Number(taskForm.createdby || 1)
+      createdby: Number(taskForm.createdby || 1),
+      deadline: normalizeDeadlineValue(taskForm.deadline)
     }
 
-    const assigneeExists = users.some((user) => Number(getUserId(user)) === payload.assignedto)
+    const assigneeCandidates = [...users, ...assigneeResults]
+    const assigneeExists = assigneeCandidates.some((user) => Number(getUserId(user)) === payload.assignedto)
 
     if (!payload.title.trim() || !payload.description.trim() || !payload.assignedto) {
       toast.error('Title, description, and assigned user are required')
@@ -367,7 +389,13 @@ const AdminPanel = () => {
                 </div>
                 <label>
                   Deadline
-                  <input type="date" value={taskForm.deadline} onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })} />
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={taskForm.deadline}
+                    onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
+                    placeholder="dd-mm-yyyy"
+                  />
                 </label>
                 <div className="button-row">
                   {editingTaskId && <button type="button" className="btn secondary" onClick={resetTaskForm}>Cancel</button>}
@@ -384,7 +412,7 @@ const AdminPanel = () => {
                       <td>{assignedUserText(task.assignedto)}</td>
                       <td>{priorityText(task.priority)}</td>
                       <td>{statusText(task.status)}</td>
-                      <td>{task.deadline || '-'}</td>
+                      <td>{formatDeadlineLabel(task.deadline)}</td>
                       <td className="actions">
                         <button type="button" className="link-button" onClick={() => editTask(task)}>Edit</button>
                         <button type="button" className="link-button danger" onClick={() => deleteTask(task._id)}>Delete</button>

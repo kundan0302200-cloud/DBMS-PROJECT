@@ -15,6 +15,7 @@ app.add_middleware(
 app.include_router(AuthenticationRouter)
 app.include_router(ResourceRouter)
 app.include_router(BookingRouter)
+app.include_router(TaskRouter)
 
 @app.get("/")
 def home():

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <dirs>
+    <entry loc="C:\Users\HP\Downloads\sts.zip\sts-5.1.1.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141" stamp="1776951298012"/>
     <entry loc="C:\Users\konde\Downloads\sts-5.1.1.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141" stamp="1773731384000"/>
+    <entry loc="C:\Program Files\Java\jdk-24" stamp="1753810898442"/>
     <entry loc="C:\Users\konde\Downloads\sts-5.1.1.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141\jre" stamp="1773731384000"/>
     <entry loc="C:\Program Files\Java\jdk-25.0.2" stamp="1776504586404"/>
+    <entry loc="C:\Users\HP\Downloads\sts.zip\sts-5.1.1.RELEASE\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141\jre" stamp="1776951295727"/>
+    <entry loc="C:\Program Files\Java\jdk-25.0.3" stamp="1776887406649"/>
+    <entry loc="C:\Program Files\Java\jre1.8.0_471" stamp="1761359196994"/>
 </dirs>

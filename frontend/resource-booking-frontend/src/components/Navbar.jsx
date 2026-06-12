@@ -24,6 +24,7 @@ const Navbar = ({ onLogout }) => {
           <NavItem to="/dashboard">Dashboard</NavItem>
           <NavItem to="/resources">Resources</NavItem>
           <NavItem to="/my-bookings">My bookings</NavItem>
+          <NavItem to="/my-tasks">My tasks</NavItem>
           {userRoleNum >= 2 && <NavItem to="/admin">Manage</NavItem>}
         </div>
 

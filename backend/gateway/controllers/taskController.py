@@ -3,7 +3,7 @@ from models.schemas import TasksSchema
 import httpx
 
 router = APIRouter(prefix="/taskservice")
-SPRING_URL = "http://localhost:8002/"  # Spring Boot URL
+SPRING_URL = "http://localhost:8002/"  # Express server2 (Mongo tasks)
 
 @router.post("/createtask")
 async def createTask(T: TasksSchema, Token: str = Header(...)):
@@ -39,6 +39,15 @@ async def updateTask(ID: str, T: TasksSchema, Token: str = Header(...)):
         response = await client.put(
             SPRING_URL + f"task/updatetask/{ID}",
             json=T.model_dump(),
+            headers = {"Token": Token}
+        )
+    return response.json()
+
+@router.get("/vectorsearch/{QUERY}")
+async def vectorSearch(QUERY: str, Token: str = Header(...)):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            SPRING_URL + f"task/vectorsearch/{QUERY}",
             headers = {"Token": Token}
         )
     return response.json()
